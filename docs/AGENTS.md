@@ -871,4 +871,27 @@ Allows assigning calendar entries to specific calendars for color-coding.
   - Function: `create_owner_member()` creates owner record on event insert
   - All future events will automatically have owner membership
 
+## TODOS
+
+### Active Issues (Jan 1, 2026)
+
+- **Fix Invites**: Invite functionality needs review and fixes
+  - Check invite token validation
+  - Verify acceptance flow working properly
+  - Test email delivery and link generation
+  
+- **Fix Team Creation**: Team creation dialog/process needs fixes
+  - Verify dialog opens and submits properly
+  - Check form validation
+  - Test team creation with proper role checks
+  
+- **Fix Team Page Layout**: Team page UI layout has issues
+  - Left sidebar (team list) visibility
+  - Right panel (team details) layout
+  - Button visibility for create team and invite buttons
+  - Check responsive behavior and overflow handling
+
+**IMPORTANT**: When reading this file next, please review these todos, check the code, and provide updates on progress and remaining work.
+
+
 
