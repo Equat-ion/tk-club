@@ -387,7 +387,7 @@ export default function TeamPage() {
   // Check if user can manage: either has owner/admin role in event_members, 
   // OR is the event organizer (fallback for cases where trigger didn't fire)
   const isEventOrganizer = event && organizer && event.organizer_id === organizer.id
-  const canManage = currentMember?.role === 'owner' || currentMember?.role === 'admin' || isEventOrganizer
+  const canManage = !!(currentMember?.role === 'owner' || currentMember?.role === 'admin' || isEventOrganizer)
   
   // Use different team queries based on role
   const { data: allTeams, isLoading: loadingAllTeams } = useEventTeams(canManage ? eventId : null)

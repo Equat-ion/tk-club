@@ -35,10 +35,16 @@ export default function SignupPage() {
 
     const supabase = createClient()
     
+    // Get the current origin for redirectTo
+    const origin = typeof window !== 'undefined' ? window.location.origin : ''
+    
     // Sign up the user
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        emailRedirectTo: `${origin}/auth/callback`,
+      },
     })
 
     if (authError) {

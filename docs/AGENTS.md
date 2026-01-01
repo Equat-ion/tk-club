@@ -891,6 +891,9 @@ Allows assigning calendar entries to specific calendars for color-coding.
   - Button visibility for create team and invite buttons
   - Check responsive behavior and overflow handling
 
+- **Fix Borked Build**: Build not working on Vercel
+
+
 **IMPORTANT**: When reading this file next, please review these todos, check the code, and provide updates on progress and remaining work.
 
 
