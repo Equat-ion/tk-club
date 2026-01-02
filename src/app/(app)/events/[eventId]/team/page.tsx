@@ -109,7 +109,7 @@ function TeamList({
   )
 
   return (
-    <div className="w-80 shrink-0 border-r flex flex-col h-full">
+    <div className="w-80 shrink-0 border-r flex flex-col overflow-hidden">
       {/* Header */}
       <div className="p-3 border-b space-y-2">
         <div className="relative">
@@ -239,7 +239,7 @@ function TeamDetails({
   }
 
   return (
-    <div className="flex-1 flex flex-col h-full">
+    <div className="flex-1 flex flex-col overflow-hidden">
       {/* Team Header */}
       <div className="p-4 border-b">
         <div className="flex items-start justify-between">
@@ -421,7 +421,7 @@ export default function TeamPage() {
       <AppShell>
         <SidebarInset>
         <div className="flex h-[calc(100vh-3rem)]">
-          <div className="w-80 border-r p-4 space-y-4">
+          <div className="w-80 shrink-0 border-r overflow-hidden p-4 space-y-4">
             <Skeleton className="h-10 w-full" />
             <Skeleton className="h-10 w-full" />
             <div className="space-y-2 mt-4">
@@ -430,7 +430,7 @@ export default function TeamPage() {
               <Skeleton className="h-16 w-full" />
             </div>
           </div>
-          <div className="flex-1 p-6">
+          <div className="flex-1 overflow-hidden p-6">
             <Skeleton className="h-8 w-48 mb-4" />
             <Skeleton className="h-4 w-64" />
           </div>
@@ -443,29 +443,26 @@ export default function TeamPage() {
   return (
     <AppShell>
       <SidebarInset>
-      <div className="flex flex-col h-[calc(100vh-3rem)]">
-        {/* Two Column Layout */}
-        <div className="flex flex-1 overflow-hidden">
-          <TeamList
-            teams={teams}
-            isLoading={isLoadingTeams}
-            searchQuery={searchQuery}
-            selectedTeamId={selectedTeam?.id || null}
-            onSelectTeam={setSelectedTeam}
-            onSearchChange={setSearchQuery}
-            canManage={canManage}
-            onCreateTeam={() => setCreateTeamOpen(true)}
-            onInviteMember={() => setInviteMemberOpen(true)}
-          />
-          <TeamDetails
-            team={selectedTeam}
-            eventId={eventId}
-            canManage={canManage}
-            onEdit={() => setEditTeamOpen(true)}
-            onDelete={() => setTeamToDelete(selectedTeam)}
-            onAssignMembers={() => setAssignMembersOpen(true)}
-          />
-        </div>
+      <div className="flex h-[calc(100vh-3rem)]">
+        <TeamList
+          teams={teams}
+          isLoading={isLoadingTeams}
+          searchQuery={searchQuery}
+          selectedTeamId={selectedTeam?.id || null}
+          onSelectTeam={setSelectedTeam}
+          onSearchChange={setSearchQuery}
+          canManage={canManage}
+          onCreateTeam={() => setCreateTeamOpen(true)}
+          onInviteMember={() => setInviteMemberOpen(true)}
+        />
+        <TeamDetails
+          team={selectedTeam}
+          eventId={eventId}
+          canManage={canManage}
+          onEdit={() => setEditTeamOpen(true)}
+          onDelete={() => setTeamToDelete(selectedTeam)}
+          onAssignMembers={() => setAssignMembersOpen(true)}
+        />
       </div>
       </SidebarInset>
 
