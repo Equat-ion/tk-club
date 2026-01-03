@@ -29,6 +29,7 @@ interface MonthViewProps {
 }
 
 const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+const weekDaysAriaLabels = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 // Helper to check if an event starts on a specific day
 function eventStartsOnDay(event: CalendarEvent, day: Date): boolean {

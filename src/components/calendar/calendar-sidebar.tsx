@@ -260,7 +260,7 @@ function CalendarMenuItem({ calendar, eventId, onToggleVisibility, onDelete }: C
         >
           <div
             className={cn(
-              "size-2.5 shrink-0 transition-opacity",
+              "size-2.5 shrink-0 rounded-full transition-opacity",
               !calendar.is_visible && "opacity-50"
             )}
             style={{ backgroundColor: calendar.color }}
@@ -413,7 +413,7 @@ function CalendarFormDialog({
                   type="button"
                   onClick={() => onColorChange(c.value)}
                   className={cn(
-                    'size-6 transition-all',
+                    'size-6 rounded-full transition-all',
                     color === c.value
                       ? 'ring-2 ring-offset-2 ring-primary'
                       : 'hover:scale-110'
@@ -426,14 +426,14 @@ function CalendarFormDialog({
           </div>
         </div>
         <div className="flex justify-end gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isPending}>
             Cancel
           </Button>
           <Button
             onClick={onSubmit}
             disabled={!name.trim() || isPending}
           >
-            {submitLabel}
+            {isPending ? 'Saving...' : submitLabel}
           </Button>
         </div>
       </DialogContent>

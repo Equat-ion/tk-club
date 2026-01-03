@@ -99,6 +99,7 @@ export function EditTeamDialog({
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
+              disabled={updateTeam.isPending}
             >
               Cancel
             </Button>

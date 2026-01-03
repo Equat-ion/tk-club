@@ -133,6 +133,11 @@ export function EntryPopover({
     if (isNaN(start.getTime()) || isNaN(end.getTime())) {
       return
     }
+
+    // Validate that end time is after start time
+    if (end <= start) {
+      return
+    }
     
     // Ensure calendar_id is set (use default if not selected)
     const finalCalendarId = calendarId || calendars.find(cal => cal.is_default)?.id || calendars[0]?.id || null

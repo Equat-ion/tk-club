@@ -138,7 +138,7 @@ function TeamList({
           {isLoading ? (
             <div className="space-y-2">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="p-3 rounded-lg">
+                <div key={i} className="p-3 rounded-none border">
                   <Skeleton className="h-5 w-32 mb-2" />
                   <Skeleton className="h-4 w-20" />
                 </div>
@@ -150,7 +150,7 @@ function TeamList({
                 <button
                   key={team.id}
                   onClick={() => onSelectTeam(team)}
-                  className={`w-full text-left p-3 rounded-lg transition-colors ${
+                  className={`w-full text-left p-3 rounded-none transition-colors ${
                     selectedTeamId === team.id
                       ? 'bg-accent text-accent-foreground'
                       : 'hover:bg-muted'
@@ -280,7 +280,7 @@ function TeamDetails({
           {loadingMembers ? (
             <div className="space-y-3">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="flex items-center gap-3 p-3 rounded-lg border">
+                <div key={i} className="flex items-center gap-3 p-3 rounded-none border">
                   <Skeleton className="size-10 rounded-full" />
                   <div className="flex-1">
                     <Skeleton className="h-4 w-32 mb-1" />
@@ -294,7 +294,7 @@ function TeamDetails({
               {teamMembers.map((tm) => (
                 <div
                   key={tm.id}
-                  className="flex items-center gap-3 p-2.5 rounded-lg border hover:bg-muted/50 transition-colors"
+                  className="flex items-center gap-3 p-2.5 rounded-none border hover:bg-muted/50 transition-colors"
                 >
                   <Avatar>
                     <AvatarFallback>
@@ -351,12 +351,13 @@ function TeamDetails({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={removeFromTeam.isPending}>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleRemoveMember}
+              disabled={removeFromTeam.isPending}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              Remove
+              {removeFromTeam.isPending ? 'Removing...' : 'Remove'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -506,12 +507,13 @@ export default function TeamPage() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={deleteTeam.isPending}>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDeleteTeam}
+              disabled={deleteTeam.isPending}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              Delete
+              {deleteTeam.isPending ? 'Deleting...' : 'Delete'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

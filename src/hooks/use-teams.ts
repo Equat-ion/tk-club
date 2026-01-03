@@ -679,6 +679,7 @@ export function useAcceptInvite() {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['event-members', data.eventId] })
+      queryClient.invalidateQueries({ queryKey: ['current-member', data.eventId] })
       queryClient.invalidateQueries({ queryKey: ['events'] })
     },
   })

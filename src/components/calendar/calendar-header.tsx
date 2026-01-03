@@ -57,6 +57,8 @@ export function CalendarHeader() {
           <button
             key={option.value}
             onClick={() => setCalendarView(option.value)}
+            aria-label={`Switch to ${option.label} view`}
+            aria-pressed={calendarView === option.value}
             className={cn(
               'px-3 py-1 text-xs font-medium rounded-none transition-colors',
               calendarView === option.value

@@ -268,6 +268,7 @@ export function KanbanBoard({ eventId }: KanbanBoardProps) {
                           <KanbanBoardCardButtonGroup>
                             <KanbanBoardCardButton
                               tooltip="Delete task"
+                              aria-label="Delete task"
                               onClick={e => {
                                 e.stopPropagation()
                                 setDeletingTaskId(task.id)
@@ -289,7 +290,7 @@ export function KanbanBoard({ eventId }: KanbanBoardProps) {
 
                 {isNotStarted && (
                   <KanbanBoardColumnFooter>
-                    <KanbanBoardColumnButton onClick={() => handleCreateTask(column.id)}>
+                    <KanbanBoardColumnButton onClick={() => handleCreateTask(column.id)} aria-label="Add new task">
                       <Plus className="mr-1 size-4" />
                       Add task
                     </KanbanBoardColumnButton>
@@ -311,8 +312,10 @@ export function KanbanBoard({ eventId }: KanbanBoardProps) {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteTask}>Delete</AlertDialogAction>
+            <AlertDialogCancel disabled={deleteTask.isPending}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteTask} disabled={deleteTask.isPending}>
+              {deleteTask.isPending ? 'Deleting...' : 'Delete'}
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

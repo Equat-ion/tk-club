@@ -120,7 +120,7 @@ export default function InvitePage() {
         </CardHeader>
         <CardContent className="space-y-4">
           {acceptError && (
-            <div className="p-3 rounded-lg bg-destructive/10 text-destructive text-sm">
+            <div className="p-3 rounded-none border border-destructive/20 bg-destructive/10 text-destructive text-sm">
               {acceptError}
             </div>
           )}

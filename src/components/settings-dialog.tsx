@@ -58,8 +58,9 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
                 <button
                   key={theme.value}
                   onClick={() => handleThemeChange(theme.value)}
+                  disabled={updateSettings.isPending}
                   className={cn(
-                    'flex flex-col items-center gap-2 rounded-none border p-4 transition-colors',
+                    'flex flex-col items-center gap-2 rounded-none border p-4 transition-colors disabled:opacity-50',
                     themePreference === theme.value
                       ? 'border-primary bg-primary/5'
                       : 'border-border hover:bg-muted'

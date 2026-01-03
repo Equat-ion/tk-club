@@ -56,12 +56,12 @@ export function CreateEventDialog({ open, onOpenChange }: CreateEventDialogProps
 
     // Validation
     if (startDate && isBefore(startDate, today)) {
-      setError('Start date must be today or in the future')
+      setError('Start date cannot be in the past')
       return
     }
 
     if (startDate && endDate && isBefore(endDate, startDate)) {
-      setError('End date must be after or equal to start date')
+      setError('End date cannot be before the start date')
       return
     }
     
@@ -89,6 +89,9 @@ export function CreateEventDialog({ open, onOpenChange }: CreateEventDialogProps
     setEndDate(undefined)
     setIcon('🎉')
     setError(null)
+    setStartDateOpen(false)
+    setEndDateOpen(false)
+    setEmojiPickerOpen(false)
   }
 
   const handleOpenChange = (isOpen: boolean) => {

@@ -152,7 +152,7 @@ export function AssignMembersDialog({
                 {filteredMembers.map((member) => (
                   <label
                     key={member.id}
-                    className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted cursor-pointer"
+                    className="flex items-center gap-3 p-2 rounded-none hover:bg-muted cursor-pointer"
                   >
                     <Checkbox
                       checked={selectedMemberIds.has(member.id)}

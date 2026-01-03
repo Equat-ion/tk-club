@@ -203,7 +203,7 @@ export function InviteMemberDialog({
                       {linkInvites.map((invite) => (
                         <div
                           key={invite.id}
-                          className="flex items-center gap-2 p-3 border rounded-lg"
+                          className="flex items-center gap-2 p-3 border rounded-none"
                         >
                           <div className="flex-1 min-w-0">
                             <code className="text-xs text-muted-foreground truncate block">

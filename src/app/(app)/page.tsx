@@ -115,8 +115,9 @@ export default function HomePage() {
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="flex size-10 items-center justify-center rounded-none bg-muted text-xl">
+                      <div className="flex size-10 items-center justify-center rounded-none border bg-muted text-xl">
                         {event.icon || '🎉'}
+                      </div>
                       </div>
                       <div className="space-y-1">
                         <CardTitle className="text-lg">{event.name}</CardTitle>

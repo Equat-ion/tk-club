@@ -102,6 +102,7 @@ export function CreateTeamDialog({
               type="button"
               variant="outline"
               onClick={() => handleOpenChange(false)}
+              disabled={createTeam.isPending}
             >
               Cancel
             </Button>
