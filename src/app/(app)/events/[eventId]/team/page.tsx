@@ -44,9 +44,6 @@ import { EditTeamDialog } from '@/components/teams/edit-team-dialog'
 import { AssignMembersDialog } from '@/components/teams/assign-members-dialog'
 import { InviteMemberDialog } from '@/components/teams/invite-member-dialog'
 import type { EventTeam } from '@/lib/database.types'
-import AppShell from '@/components/app-shell'
-
-import { SidebarInset } from "@/components/ui/sidebar"
 
 function getRoleBadge(role: string) {
   switch (role) {
@@ -418,31 +415,26 @@ export default function TeamPage() {
 
   if (loadingCurrentMember || loadingEvent || loadingOrganizer) {
     return (
-      <AppShell>
-        <SidebarInset>
-        <div className="flex h-[calc(100vh-3rem)]">
-          <div className="w-80 shrink-0 border-r overflow-hidden p-4 space-y-4">
-            <Skeleton className="h-10 w-full" />
-            <Skeleton className="h-10 w-full" />
-            <div className="space-y-2 mt-4">
-              <Skeleton className="h-16 w-full" />
-              <Skeleton className="h-16 w-full" />
-              <Skeleton className="h-16 w-full" />
-            </div>
-          </div>
-          <div className="flex-1 overflow-hidden p-6">
-            <Skeleton className="h-8 w-48 mb-4" />
-            <Skeleton className="h-4 w-64" />
+      <div className="flex h-[calc(100vh-3rem)]">
+        <div className="w-80 shrink-0 border-r overflow-hidden p-4 space-y-4">
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full" />
+          <div className="space-y-2 mt-4">
+            <Skeleton className="h-16 w-full" />
+            <Skeleton className="h-16 w-full" />
+            <Skeleton className="h-16 w-full" />
           </div>
         </div>
-        </SidebarInset>
-      </AppShell>
+        <div className="flex-1 overflow-hidden p-6">
+          <Skeleton className="h-8 w-48 mb-4" />
+          <Skeleton className="h-4 w-64" />
+        </div>
+      </div>
     )
   }
 
   return (
-    <AppShell>
-      <SidebarInset>
+    <>
       <div className="flex h-[calc(100vh-3rem)]">
         <TeamList
           teams={teams}
@@ -464,7 +456,6 @@ export default function TeamPage() {
           onAssignMembers={() => setAssignMembersOpen(true)}
         />
       </div>
-      </SidebarInset>
 
       {/* Dialogs */}
       <CreateTeamDialog
@@ -525,7 +516,6 @@ export default function TeamPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-      
-    </AppShell>
+    </>
   )
 }
