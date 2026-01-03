@@ -118,7 +118,6 @@ export default function HomePage() {
                       <div className="flex size-10 items-center justify-center rounded-none border bg-muted text-xl">
                         {event.icon || '🎉'}
                       </div>
-                      </div>
                       <div className="space-y-1">
                         <CardTitle className="text-lg">{event.name}</CardTitle>
                         {formatEventDates(event) && (
