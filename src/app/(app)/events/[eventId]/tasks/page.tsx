@@ -45,7 +45,7 @@ export default function TasksPage({
         return
       }
 
-      const member = members.find(m => m.user_id === user.id)
+      const member = members.find(m => m.userId === user.id)
       if (member) {
         setCurrentMemberId(member.id)
         setCurrentMemberRole(member.role as 'owner' | 'admin' | 'member')
@@ -67,14 +67,14 @@ export default function TasksPage({
   }) => {
     try {
       await createTask.mutateAsync({
-        event_id: eventId,
-        assigner_id: currentMemberId,
-        assignee_id: data.assigneeId || null,
-        team_id: data.teamId || null,
+        eventId: eventId,
+        assignerId: currentMemberId,
+        assigneeId: data.assigneeId || null,
+        teamId: data.teamId || null,
         title: data.title,
         description: data.description || null,
         priority: data.priority,
-        due_at: data.dueAt || null,
+        dueAt: data.dueAt || null,
         status: 'inbox',
       })
     } catch (error) {
@@ -95,13 +95,14 @@ export default function TasksPage({
     try {
       await updateTask.mutateAsync({
         id: editingTask.id,
-        eventId,
+        eventId: eventId,
         title: data.title,
         description: data.description || null,
-        assignee_id: data.assigneeId || null,
-        team_id: data.teamId || null,
+        assigneeId: data.assigneeId || null,
+        teamId: data.teamId || null,
         priority: data.priority,
-        due_at: data.dueAt || null,
+        dueAt: data.dueAt || null,
+        status: editingTask.status,
       })
       setEditingTask(null)
     } catch (error) {
@@ -117,7 +118,7 @@ export default function TasksPage({
     try {
       await changeStatus.mutateAsync({
         id: taskId,
-        eventId,
+        eventId: eventId,
         status,
         waitingReason,
       })
