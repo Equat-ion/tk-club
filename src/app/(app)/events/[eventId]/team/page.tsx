@@ -38,7 +38,7 @@ import {
   useDeleteTeam,
   useRemoveFromTeam,
 } from '@/hooks/use-teams'
-import { useEvent, useOrganizer } from '@/hooks/use-events'
+import { useEvent, useUser } from '@/hooks/use-events'
 import { CreateTeamDialog } from '@/components/teams/create-team-dialog'
 import { EditTeamDialog } from '@/components/teams/edit-team-dialog'
 import { AssignMembersDialog } from '@/components/teams/assign-members-dialog'
@@ -382,11 +382,11 @@ export default function TeamPage() {
   // Data
   const { data: currentMember, isLoading: loadingCurrentMember } = useCurrentMember(eventId)
   const { data: event, isLoading: loadingEvent } = useEvent(eventId)
-  const { data: organizer, isLoading: loadingOrganizer } = useOrganizer()
+  const { data: user, isLoading: loadingUser } = useUser()
   
   // Check if user can manage: either has owner/admin role in event_members, 
   // OR is the event organizer (fallback for cases where trigger didn't fire)
-  const isEventOrganizer = event && organizer && event.organizer_id === organizer.id
+  const isEventOrganizer = event && user && event.organizer_id === user.id
   const canManage = !!(currentMember?.role === 'owner' || currentMember?.role === 'admin' || isEventOrganizer)
   
   // Use different team queries based on role
@@ -414,7 +414,7 @@ export default function TeamPage() {
     }
   }
 
-  if (loadingCurrentMember || loadingEvent || loadingOrganizer) {
+  if (loadingCurrentMember || loadingEvent || loadingUser) {
     return (
       <div className="flex h-[calc(100vh-3rem)]">
         <div className="w-80 shrink-0 border-r overflow-hidden p-4 space-y-4">

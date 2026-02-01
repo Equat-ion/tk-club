@@ -64,22 +64,22 @@ export function useEventMembers(eventId: string | null) {
 
       if (membersError) throw membersError
 
-      // Get user details from organizers table (which has auth_user_id mapping)
+      // Get user details from users table (which has auth_user_id mapping)
       const userIds = members.map(m => m.user_id)
-      const { data: organizers, error: orgError } = await supabase
-        .from('organizers')
+      const { data: usersList, error: usersError } = await supabase
+        .from('users')
         .select('auth_user_id, email, display_name')
         .in('auth_user_id', userIds)
 
-      if (orgError) throw orgError
+      if (usersError) throw usersError
 
-      // Map organizer info to members
+      // Map user info to members
       const membersWithInfo = members.map(member => {
-        const org = organizers?.find(o => o.auth_user_id === member.user_id)
+        const user = usersList?.find(u => u.auth_user_id === member.user_id)
         return {
           ...member,
-          user_email: org?.email,
-          user_name: org?.display_name || org?.email,
+          user_email: user?.email,
+          user_name: user?.display_name || user?.email,
         }
       })
 
@@ -361,20 +361,20 @@ export function useTeamMembers(teamId: string | null) {
       
       if (memberUserIds.length === 0) return []
 
-      const { data: organizers } = await supabase
-        .from('organizers')
+      const { data: usersList } = await supabase
+        .from('users')
         .select('auth_user_id, email, display_name')
         .in('auth_user_id', memberUserIds)
 
       // Combine data
       return (data || []).map(tm => {
-        const org = organizers?.find(o => o.auth_user_id === tm.event_member?.user_id)
+        const user = usersList?.find(u => u.auth_user_id === tm.event_member?.user_id)
         return {
           ...tm,
           event_member: {
             ...tm.event_member,
-            user_email: org?.email,
-            user_name: org?.display_name || org?.email,
+            user_email: user?.email,
+            user_name: user?.display_name || user?.email,
           },
         }
       })

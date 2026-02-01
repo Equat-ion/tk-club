@@ -1,25 +1,25 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { createClient } from '@/lib/supabase/client'
-import type { Event, EventInsert, Organizer } from '@/lib/database.types'
+import type { Event, EventInsert } from '@/lib/database.types'
 
-// Get current organizer
-export function useOrganizer() {
+// Get current user
+export function useUser() {
   const supabase = createClient()
   
   return useQuery({
-    queryKey: ['organizer'],
+    queryKey: ['user'],
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return null
 
       const { data, error } = await supabase
-        .from('organizers')
+        .from('users')
         .select('*')
         .eq('auth_user_id', user.id)
         .single()
 
       if (error) throw error
-      return data as Organizer
+      return data
     },
   })
 }
@@ -71,20 +71,20 @@ export function useCreateEvent() {
   
   return useMutation({
     mutationFn: async (event: Omit<EventInsert, 'organizer_id'>) => {
-      // Get organizer id first
+      // Get user id first
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) throw new Error('Not authenticated')
 
-      let { data: organizer } = await supabase
-        .from('organizers')
+      let { data: currentUser } = await supabase
+        .from('users')
         .select('id')
         .eq('auth_user_id', user.id)
         .single()
 
-      // Create organizer if it doesn't exist (fallback for users who signed up before callback was added)
-      if (!organizer) {
-        const { data: newOrganizer, error: createError } = await supabase
-          .from('organizers')
+      // Create user if it doesn't exist (fallback for users who signed up before callback was added)
+      if (!currentUser) {
+        const { data: newUser, error: createError } = await supabase
+          .from('users')
           .insert({
             auth_user_id: user.id,
             email: user.email!,
@@ -92,15 +92,15 @@ export function useCreateEvent() {
           .select('id')
           .single()
         
-        if (createError) throw new Error(`Failed to create organizer: ${createError.message}`)
-        organizer = newOrganizer
+        if (createError) throw new Error(`Failed to create user: ${createError.message}`)
+        currentUser = newUser
       }
 
-      if (!organizer) throw new Error('Organizer not found and could not be created')
+      if (!currentUser) throw new Error('User not found and could not be created')
 
       const { data, error } = await supabase
         .from('events')
-        .insert({ ...event, organizer_id: organizer.id })
+        .insert({ ...event, organizer_id: currentUser.id })
         .select()
         .single()
 

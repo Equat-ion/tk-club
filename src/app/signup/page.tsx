@@ -72,17 +72,17 @@ export default function SignupPage() {
     }
 
     if (authData.user) {
-      // Create organizer record (only if session exists, meaning email confirmation is disabled)
-      const { error: organizerError } = await supabase
-        .from('organizers')
+      // Create user record (only if session exists, meaning email confirmation is disabled)
+      const { error: userError } = await supabase
+        .from('users')
         .insert({
           auth_user_id: authData.user.id,
           email: authData.user.email!,
           display_name: displayName.trim(),
         })
 
-      if (organizerError) {
-        setError('Failed to create organizer profile. Please try again.')
+      if (userError) {
+        setError('Failed to create user profile. Please try again.')
         setLoading(false)
         return
       }

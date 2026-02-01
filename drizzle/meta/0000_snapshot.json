@@ -1,5 +1,5 @@
 {
-  "id": "51e6e1a8-a50d-4b63-8b03-ecd6cdd55aec",
+  "id": "06103185-3c03-4897-b250-3968818c0737",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -487,10 +487,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "events_organizer_id_organizers_id_fk": {
-          "name": "events_organizer_id_organizers_id_fk",
+        "events_organizer_id_users_id_fk": {
+          "name": "events_organizer_id_users_id_fk",
           "tableFrom": "events",
-          "tableTo": "organizers",
+          "tableTo": "users",
           "columnsFrom": [
             "organizer_id"
           ],
@@ -501,58 +501,6 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.organizers": {
-      "name": "organizers",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "auth_user_id": {
-          "name": "auth_user_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "email": {
-          "name": "email",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "display_name": {
-          "name": "display_name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -708,10 +656,10 @@
           "onDelete": "set null",
           "onUpdate": "no action"
         },
-        "tasks_owner_id_organizers_id_fk": {
-          "name": "tasks_owner_id_organizers_id_fk",
+        "tasks_owner_id_users_id_fk": {
+          "name": "tasks_owner_id_users_id_fk",
           "tableFrom": "tasks",
-          "tableTo": "organizers",
+          "tableTo": "users",
           "columnsFrom": [
             "owner_id"
           ],
@@ -855,10 +803,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "user_settings_organizer_id_organizers_id_fk": {
-          "name": "user_settings_organizer_id_organizers_id_fk",
+        "user_settings_organizer_id_users_id_fk": {
+          "name": "user_settings_organizer_id_users_id_fk",
           "tableFrom": "user_settings",
-          "tableTo": "organizers",
+          "tableTo": "users",
           "columnsFrom": [
             "organizer_id"
           ],
@@ -871,6 +819,73 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.users": {
+      "name": "users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "auth_user_id": {
+          "name": "auth_user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "display_name": {
+          "name": "display_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "users_auth_user_id_unique": {
+          "name": "users_auth_user_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "auth_user_id"
+          ]
+        },
+        "users_email_unique": {
+          "name": "users_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false

@@ -308,11 +308,11 @@ CREATE POLICY "System can mark invites as used"
 CREATE OR REPLACE FUNCTION create_owner_member()
 RETURNS trigger AS $$
 BEGIN
-  -- Get the user_id from organizers table using organizer_id
+  -- Get the user_id from users table using organizer_id
   INSERT INTO event_members (event_id, user_id, role)
-  SELECT NEW.id, o.auth_user_id, 'owner'
-  FROM organizers o
-  WHERE o.id = NEW.organizer_id;
+  SELECT NEW.id, u.auth_user_id, 'owner'
+  FROM users u
+  WHERE u.id = NEW.organizer_id;
   
   RETURN NEW;
 END;
@@ -327,9 +327,9 @@ CREATE TRIGGER trigger_create_owner_member
 -- Backfill: Add existing events' organizers as owners
 -- ============================================
 INSERT INTO event_members (event_id, user_id, role)
-SELECT e.id, o.auth_user_id, 'owner'
+SELECT e.id, u.auth_user_id, 'owner'
 FROM events e
-JOIN organizers o ON o.id = e.organizer_id
+JOIN users u ON u.id = e.organizer_id
 ON CONFLICT (event_id, user_id) DO NOTHING;
 
 -- ============================================

@@ -1,6 +1,6 @@
 import { eq, and, desc } from 'drizzle-orm'
 import { db } from '../index'
-import { events, eventMembers, organizers } from '../schema'
+import { events, eventMembers, users } from '../schema'
 
 /**
  * Get all events for a specific organizer

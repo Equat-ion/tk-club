@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS tasks (
   title TEXT NOT NULL CHECK (char_length(title) >= 1 AND char_length(title) <= 200),
   description TEXT CHECK (char_length(description) <= 2000),
   
-  owner_id UUID REFERENCES organizers(id) ON DELETE SET NULL,
+  owner_id UUID REFERENCES users(id) ON DELETE SET NULL,
   
   priority TEXT NOT NULL DEFAULT 'low' CHECK (priority IN ('low', 'high')),
   due_at TIMESTAMPTZ,
@@ -48,107 +48,107 @@ ALTER TABLE task_columns ENABLE ROW LEVEL SECURITY;
 ALTER TABLE tasks ENABLE ROW LEVEL SECURITY;
 
 -- RLS Policies for task_columns
--- Organizers can view columns for their events
-CREATE POLICY "Organizers can view their event columns"
+-- Users can view columns for their events
+CREATE POLICY "Users can view their event columns"
   ON task_columns FOR SELECT
   USING (
     EXISTS (
       SELECT 1 FROM events
       WHERE events.id = task_columns.event_id
         AND events.organizer_id IN (
-          SELECT id FROM organizers WHERE auth_user_id = auth.uid()
+          SELECT id FROM users WHERE auth_user_id = auth.uid()
         )
     )
   );
 
--- Organizers can create columns for their events
-CREATE POLICY "Organizers can create columns for their events"
+-- Users can create columns for their events
+CREATE POLICY "Users can create columns for their events"
   ON task_columns FOR INSERT
   WITH CHECK (
     EXISTS (
       SELECT 1 FROM events
       WHERE events.id = task_columns.event_id
         AND events.organizer_id IN (
-          SELECT id FROM organizers WHERE auth_user_id = auth.uid()
+          SELECT id FROM users WHERE auth_user_id = auth.uid()
         )
     )
   );
 
--- Organizers can update their event columns
-CREATE POLICY "Organizers can update their event columns"
+-- Users can update their event columns
+CREATE POLICY "Users can update their event columns"
   ON task_columns FOR UPDATE
   USING (
     EXISTS (
       SELECT 1 FROM events
       WHERE events.id = task_columns.event_id
         AND events.organizer_id IN (
-          SELECT id FROM organizers WHERE auth_user_id = auth.uid()
+          SELECT id FROM users WHERE auth_user_id = auth.uid()
         )
     )
   );
 
--- Organizers can delete their event columns
-CREATE POLICY "Organizers can delete their event columns"
+-- Users can delete their event columns
+CREATE POLICY "Users can delete their event columns"
   ON task_columns FOR DELETE
   USING (
     EXISTS (
       SELECT 1 FROM events
       WHERE events.id = task_columns.event_id
         AND events.organizer_id IN (
-          SELECT id FROM organizers WHERE auth_user_id = auth.uid()
+          SELECT id FROM users WHERE auth_user_id = auth.uid()
         )
     )
   );
 
 -- RLS Policies for tasks
--- Organizers can view tasks for their events
-CREATE POLICY "Organizers can view their event tasks"
+-- Users can view tasks for their events
+CREATE POLICY "Users can view their event tasks"
   ON tasks FOR SELECT
   USING (
     EXISTS (
       SELECT 1 FROM events
       WHERE events.id = tasks.event_id
         AND events.organizer_id IN (
-          SELECT id FROM organizers WHERE auth_user_id = auth.uid()
+          SELECT id FROM users WHERE auth_user_id = auth.uid()
         )
     )
   );
 
--- Organizers can create tasks for their events
-CREATE POLICY "Organizers can create tasks for their events"
+-- Users can create tasks for their events
+CREATE POLICY "Users can create tasks for their events"
   ON tasks FOR INSERT
   WITH CHECK (
     EXISTS (
       SELECT 1 FROM events
       WHERE events.id = tasks.event_id
         AND events.organizer_id IN (
-          SELECT id FROM organizers WHERE auth_user_id = auth.uid()
+          SELECT id FROM users WHERE auth_user_id = auth.uid()
         )
     )
   );
 
--- Organizers can update their event tasks
-CREATE POLICY "Organizers can update their event tasks"
+-- Users can update their event tasks
+CREATE POLICY "Users can update their event tasks"
   ON tasks FOR UPDATE
   USING (
     EXISTS (
       SELECT 1 FROM events
       WHERE events.id = tasks.event_id
         AND events.organizer_id IN (
-          SELECT id FROM organizers WHERE auth_user_id = auth.uid()
+          SELECT id FROM users WHERE auth_user_id = auth.uid()
         )
     )
   );
 
--- Organizers can delete their event tasks
-CREATE POLICY "Organizers can delete their event tasks"
+-- Users can delete their event tasks
+CREATE POLICY "Users can delete their event tasks"
   ON tasks FOR DELETE
   USING (
     EXISTS (
       SELECT 1 FROM events
       WHERE events.id = tasks.event_id
         AND events.organizer_id IN (
-          SELECT id FROM organizers WHERE auth_user_id = auth.uid()
+          SELECT id FROM users WHERE auth_user_id = auth.uid()
         )
     )
   );

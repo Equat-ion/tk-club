@@ -23,10 +23,10 @@ export const taskStatusEnum = pgEnum('task_status', [
 // Tables
 // ============================================
 
-export const organizers = pgTable('organizers', {
+export const users = pgTable('users', {
     id: uuid('id').primaryKey().defaultRandom(),
-    authUserId: uuid('auth_user_id').notNull(),
-    email: text('email').notNull(),
+    authUserId: uuid('auth_user_id').notNull().unique(),
+    email: text('email').notNull().unique(),
     displayName: text('display_name'),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
@@ -34,7 +34,7 @@ export const organizers = pgTable('organizers', {
 
 export const events = pgTable('events', {
     id: uuid('id').primaryKey().defaultRandom(),
-    organizerId: uuid('organizer_id').notNull().references(() => organizers.id),
+    organizerId: uuid('organizer_id').notNull().references(() => users.id),
     name: text('name').notNull(),
     description: text('description'),
     icon: text('icon'),
@@ -113,7 +113,7 @@ export const tasks = pgTable('tasks', {
     eventId: uuid('event_id').notNull().references(() => events.id, { onDelete: 'cascade' }),
     assignerId: uuid('assigner_id').notNull().references(() => eventMembers.id, { onDelete: 'cascade' }),
     assigneeId: uuid('assignee_id').references(() => eventMembers.id, { onDelete: 'set null' }),
-    ownerId: uuid('owner_id').references(() => organizers.id, { onDelete: 'set null' }),
+    ownerId: uuid('owner_id').references(() => users.id, { onDelete: 'set null' }),
     teamId: uuid('team_id').references(() => eventTeams.id, { onDelete: 'set null' }),
     title: text('title').notNull(),
     description: text('description'),
@@ -129,7 +129,7 @@ export const tasks = pgTable('tasks', {
 
 export const userSettings = pgTable('user_settings', {
     id: uuid('id').primaryKey().defaultRandom(),
-    organizerId: uuid('organizer_id').notNull().references(() => organizers.id, { onDelete: 'cascade' }),
+    organizerId: uuid('organizer_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
     themePreference: text('theme_preference').notNull().default('system'),
     defaultCalendarView: text('default_calendar_view').notNull().default('week'),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
@@ -140,15 +140,14 @@ export const userSettings = pgTable('user_settings', {
 // Relations
 // ============================================
 
-export const organizersRelations = relations(organizers, ({ many }) => ({
-    events: many(events),
+export const usersRelations = relations(users, ({ many }) => ({
     userSettings: many(userSettings),
 }))
 
 export const eventsRelations = relations(events, ({ one, many }) => ({
-    organizer: one(organizers, {
+    organizer: one(users, {
         fields: [events.organizerId],
-        references: [organizers.id],
+        references: [users.id],
     }),
     calendars: many(calendars),
     calendarEvents: many(calendarEvents),
@@ -229,9 +228,9 @@ export const tasksRelations = relations(tasks, ({ one }) => ({
         references: [eventMembers.id],
         relationName: 'assignee',
     }),
-    owner: one(organizers, {
+    owner: one(users, {
         fields: [tasks.ownerId],
-        references: [organizers.id],
+        references: [users.id],
     }),
     team: one(eventTeams, {
         fields: [tasks.teamId],
@@ -240,8 +239,8 @@ export const tasksRelations = relations(tasks, ({ one }) => ({
 }))
 
 export const userSettingsRelations = relations(userSettings, ({ one }) => ({
-    organizer: one(organizers, {
+    organizer: one(users, {
         fields: [userSettings.organizerId],
-        references: [organizers.id],
+        references: [users.id],
     }),
 }))

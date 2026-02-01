@@ -1,7 +1,9 @@
 import { defineConfig } from 'drizzle-kit'
+import { config } from 'dotenv'
+config({ path: '.env.local' })
 
 export default defineConfig({
-    // Database connection
+    // Database connectionw
     // Use direct connection for schema introspection (not pooler)
     // For runtime queries, use DATABASE_URL (pooler)
     dialect: 'postgresql',

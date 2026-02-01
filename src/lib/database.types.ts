@@ -432,6 +432,33 @@ export type Database = {
           },
         ]
       }
+      users: {
+        Row: {
+          auth_user_id: string
+          created_at: string
+          display_name: string | null
+          email: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          auth_user_id: string
+          created_at?: string
+          display_name?: string | null
+          email: string
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          auth_user_id?: string
+          created_at?: string
+          display_name?: string | null
+          email?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_settings: {
         Row: {
           created_at: string
@@ -632,6 +659,10 @@ export type EventUpdate = TablesUpdate<'events'>
 export type Organizer = Tables<'organizers'>
 export type OrganizerInsert = TablesInsert<'organizers'>
 export type OrganizerUpdate = TablesUpdate<'organizers'>
+
+export type Users = Tables<'users'>
+export type UsersInsert = TablesInsert<'users'>
+export type UsersUpdate = TablesUpdate<'users'>
 
 export type UserSettings = Tables<'user_settings'>
 export type UserSettingsInsert = TablesInsert<'user_settings'>

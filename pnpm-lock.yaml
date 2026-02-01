@@ -87,6 +87,9 @@ importers:
       babel-plugin-react-compiler:
         specifier: 1.0.0
         version: 1.0.0
+      dotenv:
+        specifier: ^17.2.3
+        version: 17.2.3
       drizzle-kit:
         specifier: ^0.31.8
         version: 0.31.8

@@ -11,28 +11,28 @@ export async function GET(request: Request) {
     const { data, error } = await supabase.auth.exchangeCodeForSession(code)
     
     if (!error && data.user) {
-      // Check if organizer record exists
-      const { data: existingOrganizer } = await supabase
-        .from('organizers')
+      // Check if user record exists
+      const { data: existingUser } = await supabase
+        .from('users')
         .select('id')
         .eq('auth_user_id', data.user.id)
         .single()
 
-      // Create organizer record if it doesn't exist
-      if (!existingOrganizer) {
+      // Create user record if it doesn't exist
+      if (!existingUser) {
         // Get display_name from user metadata (set during signup)
         const displayName = data.user.user_metadata?.display_name || null
         
-        const { error: organizerError } = await supabase
-          .from('organizers')
+        const { error: userError } = await supabase
+          .from('users')
           .insert({
             auth_user_id: data.user.id,
             email: data.user.email!,
             display_name: displayName,
           } as never)
 
-        if (organizerError) {
-          console.error('Failed to create organizer:', organizerError)
+        if (userError) {
+          console.error('Failed to create user:', userError)
         }
       }
 

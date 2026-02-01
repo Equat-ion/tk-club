@@ -14,18 +14,18 @@ export function useUserSettings() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return null
 
-      const { data: organizer } = await supabase
-        .from('organizers')
+      const { data: currentUser } = await supabase
+        .from('users')
         .select('id')
         .eq('auth_user_id', user.id)
         .single()
 
-      if (!organizer) return null
+      if (!currentUser) return null
 
       const { data, error } = await supabase
         .from('user_settings')
         .select('*')
-        .eq('organizer_id', organizer.id)
+        .eq('organizer_id', currentUser.id)
         .single()
 
       if (error && error.code !== 'PGRST116') throw error // PGRST116 = no rows returned
@@ -55,19 +55,19 @@ export function useUpdateUserSettings() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) throw new Error('Not authenticated')
 
-      const { data: organizer } = await supabase
-        .from('organizers')
+      const { data: currentUser } = await supabase
+        .from('users')
         .select('id')
         .eq('auth_user_id', user.id)
         .single()
 
-      if (!organizer) throw new Error('Organizer not found')
+      if (!currentUser) throw new Error('User not found')
 
       // Upsert settings
       const { data, error } = await supabase
         .from('user_settings')
         .upsert(
-          { organizer_id: organizer.id, ...updates },
+          { organizer_id: currentUser.id, ...updates },
           { onConflict: 'organizer_id' }
         )
         .select()

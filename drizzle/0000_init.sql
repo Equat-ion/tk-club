@@ -68,15 +68,6 @@ CREATE TABLE "events" (
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "organizers" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"auth_user_id" uuid NOT NULL,
-	"email" text NOT NULL,
-	"display_name" text,
-	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
-	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
-);
---> statement-breakpoint
 CREATE TABLE "tasks" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"event_id" uuid NOT NULL,
@@ -112,18 +103,29 @@ CREATE TABLE "user_settings" (
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE "users" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"auth_user_id" uuid NOT NULL,
+	"email" text NOT NULL,
+	"display_name" text,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
+	CONSTRAINT "users_auth_user_id_unique" UNIQUE("auth_user_id"),
+	CONSTRAINT "users_email_unique" UNIQUE("email")
+);
+--> statement-breakpoint
 ALTER TABLE "calendar_events" ADD CONSTRAINT "calendar_events_event_id_events_id_fk" FOREIGN KEY ("event_id") REFERENCES "public"."events"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "calendar_events" ADD CONSTRAINT "calendar_events_calendar_id_calendars_id_fk" FOREIGN KEY ("calendar_id") REFERENCES "public"."calendars"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "calendars" ADD CONSTRAINT "calendars_event_id_events_id_fk" FOREIGN KEY ("event_id") REFERENCES "public"."events"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "event_invites" ADD CONSTRAINT "event_invites_event_id_events_id_fk" FOREIGN KEY ("event_id") REFERENCES "public"."events"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "event_members" ADD CONSTRAINT "event_members_event_id_events_id_fk" FOREIGN KEY ("event_id") REFERENCES "public"."events"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "event_teams" ADD CONSTRAINT "event_teams_event_id_events_id_fk" FOREIGN KEY ("event_id") REFERENCES "public"."events"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "events" ADD CONSTRAINT "events_organizer_id_organizers_id_fk" FOREIGN KEY ("organizer_id") REFERENCES "public"."organizers"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "events" ADD CONSTRAINT "events_organizer_id_users_id_fk" FOREIGN KEY ("organizer_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "tasks" ADD CONSTRAINT "tasks_event_id_events_id_fk" FOREIGN KEY ("event_id") REFERENCES "public"."events"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "tasks" ADD CONSTRAINT "tasks_assigner_id_event_members_id_fk" FOREIGN KEY ("assigner_id") REFERENCES "public"."event_members"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "tasks" ADD CONSTRAINT "tasks_assignee_id_event_members_id_fk" FOREIGN KEY ("assignee_id") REFERENCES "public"."event_members"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "tasks" ADD CONSTRAINT "tasks_owner_id_organizers_id_fk" FOREIGN KEY ("owner_id") REFERENCES "public"."organizers"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "tasks" ADD CONSTRAINT "tasks_owner_id_users_id_fk" FOREIGN KEY ("owner_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "tasks" ADD CONSTRAINT "tasks_team_id_event_teams_id_fk" FOREIGN KEY ("team_id") REFERENCES "public"."event_teams"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "team_members" ADD CONSTRAINT "team_members_team_id_event_teams_id_fk" FOREIGN KEY ("team_id") REFERENCES "public"."event_teams"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "team_members" ADD CONSTRAINT "team_members_member_id_event_members_id_fk" FOREIGN KEY ("member_id") REFERENCES "public"."event_members"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "user_settings" ADD CONSTRAINT "user_settings_organizer_id_organizers_id_fk" FOREIGN KEY ("organizer_id") REFERENCES "public"."organizers"("id") ON DELETE cascade ON UPDATE no action;
+ALTER TABLE "user_settings" ADD CONSTRAINT "user_settings_organizer_id_users_id_fk" FOREIGN KEY ("organizer_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
